@@ -1,10 +1,12 @@
 import React from "react";
 import Card from "./Card";
+import Footer from "./Footer";
 import {UserInfoContext} from '../contexts/CurrentUserContext';
 function Main(props) {
     const userInfo = React.useContext(UserInfoContext);
     
     return (
+        <>
         <main className="content root">
             <section className="profile">
                 <div className="profile__avatar-link" onClick = {props.onEditAvatar} style={{backgroundImage: `url(${userInfo.avatar})`}}></div>
@@ -22,6 +24,8 @@ function Main(props) {
             })}
             </section>
         </main>
+        <Footer />
+        </>
     )
 }
 

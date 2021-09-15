@@ -1,0 +1,13 @@
+.authform__inputarea {
+    margin: 0 0 216px 0;
+    padding: 0;
+    border: none;
+    display: flex;
+    flex-direction: column;
+}
+
+@media screen and (max-width: 767px) {
+    .authform__inputarea {
+        margin: 0 0 173px 0;
+    }
+}
