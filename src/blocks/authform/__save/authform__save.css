@@ -1,4 +1,5 @@
 .authform__save {
+    margin-top: 216px;
     padding: 0;
     width: 358px;
     height: 50px;
@@ -13,6 +14,7 @@
 
 @media screen and (max-width: 767px) {
     .authform__save {
+        margin-top: 173px;
         width: 260px;
         height: 46px;
     }

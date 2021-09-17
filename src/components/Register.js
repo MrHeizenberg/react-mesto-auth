@@ -26,11 +26,11 @@ function Register(props) {
         <div className="authform authform_signup">
             <button className="authform__signswitch" onClick={pushToSignIn}>Войти</button>
             <h2 className="authform__title authform__title_signup">Регистрация</h2>
-            <fieldset className="authform__inputarea authform__inputarea_signup">
+            <form className="authform__inputarea authform__inputarea_signup" onSubmit={handleSubmit}>
                 <input type="e-mail" value = {eMail} onChange={handleEMailChange} className="authform__text authform__text_signup" placeholder="Email"></input>
                 <input type="password" value = {password} onChange={handlePasswordChange} className="authform__text authform__text_signup" placeholder="Пароль"></input>
-            </fieldset>
-            <button className="authform__save auth__save_signup" type="submit" onClick={handleSubmit}>Зарегистрироваться</button>
+                <button className="authform__save auth__save_signup" type="submit">Зарегистрироваться</button>
+            </form>
             <p className="authform__linktosignin" onClick={pushToSignIn}>Уже зарегистрированы? Войти</p>
         </div>
     )

@@ -40,6 +40,9 @@ function App() {
                     setLoggedIn(true);
                     history.push('/');
                 })
+                .catch((err) => {
+                    console.log(err);
+                })
             }
         api.getInitialCards().then((res) => {
             setCards(Array.from(res));
@@ -53,6 +56,9 @@ function App() {
         const isLiked = card.likes.some(i => i._id === currentUser._id);
         api.changeLikeCardStatus(card.card.cardId, isLiked).then((newCard) => {
             setCards((state) => state.map((c) => c._id === card.card.cardId ? newCard : c));
+        })
+        .catch((err) => {
+            console.log(err);
         });
     }
 
@@ -61,7 +67,11 @@ function App() {
         api.deleteCard(cardIdDelete).then(() => {
             setCards((state) => state.filter((c) => c._id !== cardIdDelete));
             closeAllPopups();
-        }).finally(() => {
+        })
+        .catch((err) => {
+            console.log(err);
+        })
+        .finally(() => {
             setIsLoading(false);
         });
     }
@@ -80,48 +90,63 @@ function App() {
         api.profileUpdate(name, description).then((userInfo) => {
             setCurrentUser(userInfo);
             closeAllPopups();
-        }).finally(() => {
+        })
+        .catch((err) => {
+            console.log(err);
+        })
+        .finally(() => {
             setIsLoading(false);
         });
     }
 
-    function handleUpdateAvatar(link, form) {
+    function handleUpdateAvatar(link, resetForm) {
         setIsLoading(true);
         api.profileAvatarUpdate(link).then((userInfo) => {
             setCurrentUser(userInfo);
             closeAllPopups();
-            form.reset();
-        }).finally(() => {
+            resetForm();
+        })
+        .catch((err) => {
+            console.log(err);
+        })
+        .finally(() => {
             setIsLoading(false);
         });
     }
 
-    function handleAddPlaceSubmit(name, link, form) {
+    function handleAddPlaceSubmit(name, link, resetForm) {
         setIsLoading(true);
         api.addCard(name, link).then((newCard) => {
             setCards([newCard, ...cards]);
             closeAllPopups();
-            form.reset();
-        }).finally(() => {
+            resetForm();
+        })
+        .catch((err) => {
+            console.log(err);
+        })
+        .finally(() => {
             setIsLoading(false);
         });
     }
 
     function handleOnRegister(password,email) {
         register(password,email).then(() => {
+            console.log()
             history.push('/sign-in');
             setRegError(false);
-            setIsInfoTooltipPopupOpen(true);
         })
         .catch((err) => {
             console.log(err);
             setRegError(true);
+        })
+        .finally(() => {
             setIsInfoTooltipPopupOpen(true);
         });
     }
 
     function handleonAuthorize(password,email) {
         authorize(password,email).then((data) => {
+            console.log(data)
             localStorage.setItem('jwt', data.token);
             setLoggedIn(true);
             history.push('/');
@@ -131,7 +156,7 @@ function App() {
             console.log(err);
             setRegError(true);
             setIsInfoTooltipPopupOpen(true);
-        });
+        })
     }
 
     function handleOnSignOut() {

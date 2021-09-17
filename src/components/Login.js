@@ -26,11 +26,11 @@ function Login(props) {
         <div className="authform">
             <button className="authform__signswitch authform__signswitch_toup" onClick={pushToSignIn}>Регистрация</button>
             <h2 className="authform__title">Вход</h2>
-            <fieldset className="authform__inputarea">
+            <form className="authform__inputarea" onSubmit={handleSubmit}>
                 <input type="e-mail" value = {eMail} onChange={handleEMailChange} className="authform__text" placeholder="Email"></input>
                 <input type="password" value = {password} onChange={handlePasswordChange} className="authform__text" placeholder="Пароль"></input>
-            </fieldset>
-            <button className="authform__save" type="submit" onClick={handleSubmit}>Войти</button>
+                <button className="authform__save" type="submit">Войти</button>
+            </form>
         </div>
     )
 }
