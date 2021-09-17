@@ -4,6 +4,7 @@ import Main from './Main';
 import api from "../utils/Api";
 import DeleteCardPopup from './DeleteCardPopup';
 import ImagePopup from './ImagePopup';
+import Footer from "./Footer";
 import EditProfilePopup from './EditProfilePopup';
 import EditAvatarPopup from './EditAvatarPopup';
 import Login from './Login';
@@ -208,6 +209,7 @@ function App() {
                     <ProtectedRoute exact path="/" loggedIn={loggedIn} component={Main} onEditProfile={handleEditProfileClick} onAddPlace={handleAddPlaceClick} onEditAvatar={handleEditAvatarClick} onDeleteCardPopup={handleDeleteCardClick} onCardClick={handleCardClick} cards={cards} onCardLike={handleCardLike}>
                     </ProtectedRoute>
                 </Switch>
+                {loggedIn && <Footer />}
                 <EditProfilePopup isOpen={isEditProfilePopupOpen} onClose={closeAllPopups} onUpdateUser={handleUpdateUser} onLoading={isLoading} />
 
                 <EditAvatarPopup isOpen={isEditAvatarPopupOpen} onClose={closeAllPopups} onUpdateAvatar={handleUpdateAvatar} onLoading={isLoading} />
