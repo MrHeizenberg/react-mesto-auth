@@ -42,5 +42,15 @@
   },
   "devDependencies": {
     "gh-pages": "^3.2.3"
-  }
+  },
+  "main": "index.js",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/MrHeizenberg/react-mesto-auth.git"
+  },
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/MrHeizenberg/react-mesto-auth/issues"
+  },
+  "homepage": "https://github.com/MrHeizenberg/react-mesto-auth#readme"
 }
