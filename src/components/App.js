@@ -1,7 +1,7 @@
 import React from 'react';
 import Header from './Header';
 import Main from './Main';
-import api from "../utils/Api";
+import Api from "../utils/Api";
 import DeleteCardPopup from './DeleteCardPopup';
 import ImagePopup from './ImagePopup';
 import Footer from "./Footer";
@@ -18,6 +18,7 @@ import { Route, Switch, useHistory, Redirect } from 'react-router-dom';
 
 function App() {
     const [isLoading, setIsLoading] = React.useState(false);
+    const [token, setToken] = React.useState('');
     const [isEditProfilePopupOpen, setIsEditProfilePopupOpen] = React.useState(false);
     const [isAddPlacePopupOpen, setIsAddPlacePopupOpen] = React.useState(false);
     const [isEditAvatarPopupOpen, setIsEditAvatarPopupOpen] = React.useState(false);
@@ -32,29 +33,36 @@ function App() {
     const [isMobileMenuOpen, setIsMobileMenuOpen] = React.useState(false);
     const [loggedIn, setLoggedIn] = React.useState(false);
     const history = useHistory();
+    const api = new Api({
+        baseUrl: 'https://api.wownick.nomoredomains.work',
+        headers: {
+            authorization: `Bearer ${token}`,
+            'Content-Type': 'application/json'
+        }
+    });
 
     React.useEffect(() => {
-            if(localStorage.getItem('jwt')) {
-                const jwt = localStorage.getItem('jwt');
-                getContent(jwt).then((data) => {
-                    setUserData(data.data.email);
-                    setLoggedIn(true);
-                    history.push('/');
-                })
-                .catch((err) => {
-                    console.log(err);
-                })
-            }
-        api.getInitialCards().then((res) => {
-            setCards(Array.from(res));
-        })
+        if(localStorage.getItem('jwt')) {
+            const jwt = localStorage.getItem('jwt');
+            api._options.headers.authorization = `Bearer ${jwt}`;
+            setToken(jwt);
+            getContent(jwt).then((data) => {
+                setUserData(data.email);
+                setCurrentUser(data);
+                setLoggedIn(true);
+                history.push('/');
+            })
+            api.getInitialCards().then((res) => {
+                setCards(Array.from(res));
+            })
             .catch((err) => {
                 console.log(err);
             })
-    }, [])
+        }
+}, [])
 
     function handleCardLike(card) {
-        const isLiked = card.likes.some(i => i._id === currentUser._id);
+        const isLiked = card.likes.some(i => i === currentUser._id);
         api.changeLikeCardStatus(card.card.cardId, isLiked).then((newCard) => {
             setCards((state) => state.map((c) => c._id === card.card.cardId ? newCard : c));
         })
@@ -76,15 +84,6 @@ function App() {
             setIsLoading(false);
         });
     }
-
-    React.useEffect(() => {
-        api.getProfile().then((res) => {
-            setCurrentUser(res);
-        })
-            .catch((err) => {
-                console.log(err);
-            })
-    }, []);
 
     function handleUpdateUser(name, description) {
         setIsLoading(true);
@@ -132,7 +131,6 @@ function App() {
 
     function handleOnRegister(password,email) {
         register(password,email).then(() => {
-            console.log()
             history.push('/sign-in');
             setRegError(false);
         })
@@ -147,11 +145,18 @@ function App() {
 
     function handleonAuthorize(password,email) {
         authorize(password,email).then((data) => {
-            console.log(data)
             localStorage.setItem('jwt', data.token);
+            api._options.headers.authorization = `Bearer ${data.token}`;
+            setToken(data.token);
             setLoggedIn(true);
             history.push('/');
             setUserData(email);
+            getContent(data.token).then((res) => {
+                setCurrentUser(res);
+            });
+            api.getInitialCards().then((res) => {
+                setCards(Array.from(res));
+            })
         })
         .catch((err) => {
             console.log(err);
@@ -164,6 +169,7 @@ function App() {
         localStorage.removeItem('jwt');
         setLoggedIn(false);
         history.push('/sign-in');
+        setCurrentUser({});
     }
 
     function handleEditAvatarClick() {

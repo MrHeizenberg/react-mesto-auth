@@ -1,4 +1,4 @@
-export const BASE_URL = 'https://auth.nomoreparties.co';
+export const BASE_URL = 'https://api.wownick.nomoredomains.work';
 
 function checkResStatus(response) {
     if (response.ok) {
@@ -40,7 +40,7 @@ export const getContent = (token) => {
         method: 'GET',
         headers: {
             'Content-Type': 'application/json',
-            'Authorization': `Bearer ${token}`,
+            authorization: `Bearer ${token}`,
         }
     })
     .then((response) => {

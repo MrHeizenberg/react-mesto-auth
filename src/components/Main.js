@@ -17,7 +17,7 @@ function Main(props) {
             </section>
             <section className="cards">
                 {props.cards.map(function(card) {
-                const cardinfo = {link: card.link, name: card.name, cardId: card._id, likesSum: card.likes.length, owner: card.owner._id};
+                const cardinfo = {link: card.link, name: card.name, cardId: card._id, likesSum: card.likes.length, owner: card.owner};
                 return (<Card 
                     card = {cardinfo} 
                     onCardClick = {props.onCardClick} 

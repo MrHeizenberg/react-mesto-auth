@@ -4,7 +4,7 @@ import React from 'react';
 function Card(props) {
     const userInfo = React.useContext(UserInfoContext);
     const isOwn = props.card.owner === userInfo._id;
-    const isLiked = props.likes.some(i => i._id === userInfo._id);
+    const isLiked = props.likes.some(i => i === userInfo._id);
     const cardLikeButtonClassName = (`cards__like ${isLiked ? 'cards__like_active' : ''}`);
     const cardDeleteButtonClassName = (`cards__delete ${isOwn ? 'cards__delete_visible' : ''}`);
     return (
